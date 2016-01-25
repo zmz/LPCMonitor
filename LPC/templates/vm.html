@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+       {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'easyui/themes/default/easyui.css' %}" />
+
+    <script src="{% static 'easyui/jquery.min.js' %}"></script>
+    <script src="{% static 'easyui/jquery.easyui.min.js' %}"></script>
+    <script>
+       function doSearch(){
+    $('#vm_tt').datagrid('load',{
+        itemid: $('#itemid').val(),
+        productid: $('#productid').val()
+    });
+
+           $('#aa').datagrid({
+    url:'/LPC/vm_search',
+    columns:[[
+        {field:'code',title:'Code',width:100},
+        {field:'name',title:'Name',width:100},
+        {field:'price',title:'Price',width:100,align:'right'}
+    ]]
+});
+}
+
+    </script>
+</head>
+<body>
+<h1>{{ hello }}</h1>
+
+<div id="tb" style="padding:3px">
+    <span>Item ID:</span>
+    <input id="itemid" style="line-height:26px;border:1px solid #ccc">
+    <span>Product ID:</span>
+    <input id="productid" style="line-height:26px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">Search</a>
+</div>
+<table id="aa" ></table>
+
+<table id="vm_tt" class="easyui-datagrid" ,fit='True'
+         url="/LPC/vm_search" toolbar="#tb"
+        title="Load Data" iconCls="icon-save"
+        rownumbers="true" pagination="true">
+        {% csrf_token %}
+
+    <thead>
+        <tr>
+            <th field="itemid" width="80">Item ID</th>
+            <th field="productid" width="80">Product ID</th>
+            <th field="listprice" width="80" align="right">List Price</th>
+            <th field="unitcost" width="80" align="right">Unit Cost</th>
+            <th field="attr1" width="150">Attribute</th>
+            <th field="status" width="60" align="center">Stauts</th>
+        </tr>
+    </thead>
+</table>
+</body>
+</html>

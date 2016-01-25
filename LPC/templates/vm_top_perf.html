@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+           {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'easyui/themes/default/easyui.css' %}" />
+
+    <script src="{% static 'easyui/jquery.min.js' %}"></script>
+    <script src="{% static 'easyui/jquery.easyui.min.js' %}"></script>
+
+    {#  jquery valid js#}
+    <script src="{% static 'jquery/validate/jquery.validate.js' %}" type="text/javascript"></script>
+    <script src="{% static 'jquery/validate/messages_cn.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'echarts/echarts.min.js' %}"></script>
+
+
+    <script>
+        $(document).ready(function(){
+            $('#projectName').combobox({
+                url:'/LPC/project_init',
+                valueField:'id',
+                textField:'text'
+            });
+        })
+        function doSearch(){
+
+            $("#signupForm").validate({
+                submitHandler: function(form) {
+                    $('#vm_tt').datagrid('load',{
+                        counter_name:$('#counter_name').combobox('getValue')
+
+                    });
+                }
+            });
+        }
+        function doClear(){
+            $('#signupForm').form('clear');
+        }
+
+    </script>
+</head>
+<body>
+
+<form id="signupForm" method="get" action="">
+    <span>counter_name:</span>
+    <select id="counter_name" class="easyui-combobox" name="state" style="width:200px;">
+        <option value="cpu_util">cpu_util</option>
+        <option value="memory.usage">memory.usage</option>
+        <option value="network.incoming.bytes.rate">network.incoming.bytes.rate</option>
+        <option value="network.outgoing.bytes.rate">network.outgoing.bytes.rate</option>
+        <option value="volume.read.bytes.rate">volume.read.bytes.rate</option>
+        <option value="volume.write.bytes.rate">volume.write.bytes.rate</option>
+    </select>
+
+    <input class="submit" type="submit" value="search" onclick="doSearch()"/>
+    <input class="clear" type="button" value="clear" onclick="doClear()"/>
+
+</form>
+
+
+<table id="vm_tt" class="easyui-datagrid"
+         url="/LPC/findTopPerfStatics" toolbar="#tb"
+        title="Load Data" iconCls="icon-save"
+        rownumbers="true">
+{#         pagination="true">#}
+        {% csrf_token %}
+
+    <thead>
+        <tr>
+            <th field="resource_name" >resource_name</th>
+            <th field="user_id" >user_id</th>
+            <th field="counter_name" >counter_name</th>
+            <th field="resource_id" >resource_id</th>
+            <th field="timestamp" >timestamp</th>
+            <th field="avg" >avg</th>
+            <th field="unit" >unit</th>
+            <th field="count" >count</th>
+            <th field="max" >max</th>
+            <th field="min" >min</th>
+            <th field="sum" >sum</th>
+            <th field="period_start" >period_start</th>
+            <th field="period_end" >period_start</th>
+        </tr>
+    </thead>
+</table>
+
+</body>
+</html>

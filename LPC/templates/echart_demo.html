@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+           {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'easyui/themes/default/easyui.css' %}" />
+
+    <script src="{% static 'easyui/jquery.min.js' %}"></script>
+    <script src="{% static 'easyui/jquery.easyui.min.js' %}"></script>
+
+    {#  jquery valid js#}
+    <script src="{% static 'jquery/validate/jquery.validate.js' %}" type="text/javascript"></script>
+    <script src="{% static 'jquery/validate/messages_cn.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'echarts/echarts.min.js' %}"></script>
+</head>
+<body>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="main" style="height:400px"></div>
+
+    <script type="text/javascript">
+
+        var myChart = echarts.init(document.getElementById('main'));
+        // 显示标题，图例和空的坐标轴
+        myChart.setOption({
+            title: {
+                text: '异步数据加载示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: [1,2,3]
+            },
+            yAxis: {},
+            series: [{
+                name: 'ggg',
+                type: 'bar',
+                data: [4,5,6]
+            }]
+        });
+
+{#        // 异步加载数据#}
+{#        $.getJSON('/LPC/perf_searchStaticByVm',function (data) {#}
+{##}
+            {#        // 指定图表的配置项和数据#}
+{#            var option = {#}
+{#                title: {#}
+{#                    text: '地对地导弹'#}
+{#                },#}
+{#                tooltip: {},#}
+{#                legend: {#}
+{#                    data:['对对对']#}
+{#                },#}
+{#                xAxis: {#}
+{#                    data: data.categories#}
+{#                },#}
+{#                yAxis: {},#}
+{#                series: [{#}
+{#                    name: '销量',#}
+{#                    type: 'bar',#}
+{#                    data: data.series#}
+{#                }]#}
+{#            };#}
+{##}
+{#            // 使用刚指定的配置项和数据显示图表。#}
+{#            myChart.setOption(option);#}
+{##}
+{##}
+{#        });#}
+
+
+
+    </script>
+
+
+</body>
+
+</body>
+</html>

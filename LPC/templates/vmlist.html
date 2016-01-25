@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+           {% load staticfiles %}
+
+    <link rel="stylesheet" href="{% static 'easyui/themes/default/easyui.css' %}" />
+
+    <script src="{% static 'easyui/jquery.min.js' %}"></script>
+    <script src="{% static 'easyui/jquery.easyui.min.js' %}"></script>
+
+    {#  jquery valid js#}
+    <script src="{% static 'jquery/validate/jquery.validate.js' %}" type="text/javascript"></script>
+    <script src="{% static 'jquery/validate/messages_cn.js' %}" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#hostname').combobox({
+                url:'/LPC/zone_init',
+                valueField:'value',
+                textField:'text',
+                groupField:'group'
+            });
+        })
+        function doSearch(){
+
+            $("#signupForm").validate({
+                submitHandler: function(form) {
+                    $('#vm_tt').datagrid('load',{
+                        vname: $('#vname').val(),
+                        hostname:$('#hostname').combobox('getValue')
+
+                    });
+                }
+            });
+        }
+        function doClear(){
+            $('#signupForm').form('clear');
+        }
+
+    </script>
+</head>
+<body>
+
+<form id="signupForm" method="get" action="">
+    <span>vname:</span>
+    <input id="vname" style="line-height:26px;border:1px solid #ccc" >
+    <span>hostname:</span>
+    <input id='hostname' >
+
+    <input class="submit" type="submit" value="search" onclick="doSearch()"/>
+    <input class="clear" type="button" value="clear" onclick="doClear()"/>
+
+</form>
+<table id="vm_tt" class="easyui-datagrid"
+         url="/LPC/vm_search" toolbar="#tb"
+        title="Load Data" iconCls="icon-save"
+        rownumbers="true" pageSize="20" pagination="true" fitColumns="true" singleSelect="true">
+        {% csrf_token %}
+
+    <thead>
+        <tr>
+            <th field="uuid">uuid</th>
+            <th field="vname">vname</th>
+            <th field="project_id" >project_id</th>
+            <th field="project_name">project_name</th>
+            <th field="user_id" >user_id</th>
+                        <th field="vcpus" >vcpus</th>
+                        <th field="memory_mb">memory_mb</th>
+                        <th field="root_gb" >root_gb</th>
+            <th field="host" >host</th>
+            <th field="vm_state">vm_state</th>
+
+        </tr>
+    </thead>
+</table>
+</body>
+</html>
