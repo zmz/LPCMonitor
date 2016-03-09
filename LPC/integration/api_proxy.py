@@ -56,7 +56,7 @@ class OpenStackPrdRequester(APIEndpointsInterface):
         'endpoint_port': 5000,
         'endpoint_ip': '10.120.20.1',
         'user_name': 'fopadmin',
-        'user_password': 'YG86R-jkE',
+        'user_password': 'YG86R-jkE1234',
         'tenant_name': 'admin'
     }
 
@@ -80,6 +80,7 @@ class OpenStackPrdRequester(APIEndpointsInterface):
 
 
 
+
     @staticmethod
     def get_zone_list():
         """
@@ -91,6 +92,7 @@ class OpenStackPrdRequester(APIEndpointsInterface):
         :return:
         """
         token = OpenStackPrdRequester.get_token()
+        print("----------------token-----------------"+str(token))
         service_catalog = OpenStackPrdRequester.__make_service_catalog(token)
         url = service_catalog['nova']['endpoints'][0]['adminURL']
         url = OpenStackPrdRequester.__make_endpoint_ip(url) + '/os-availability-zone/detail'
@@ -101,8 +103,11 @@ class OpenStackPrdRequester(APIEndpointsInterface):
         tmpDict={}
         for i, zone in enumerate(zoneList['availabilityZoneInfo']):
             print i, zone
-            tmpDict['group']=zone['zoneName']
+            if zone['zoneName']=='internal':
+                continue
+
             for  host  in  zone['hosts'].keys():
+                tmpDict['group']=zone['zoneName']
                 tmpDict['value']=host
                 tmpDict['text']=host
                 zoneResult.append(tmpDict)

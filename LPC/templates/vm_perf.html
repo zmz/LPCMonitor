@@ -21,14 +21,41 @@
         function doSearch(){
 
             vmId=$('#vmList').combobox('getValue');
-            counter_name=$('#counter_name').combobox('getValue');
-            getData(vmId,counter_name)
+            // show property grid
+             $('#vmInfo').datagrid('load',{
+                    resource_id:vmId
+                });
+
+
+            counter_name='cpu_util';
+            url=getData(vmId,counter_name);
+            showCharts('cpu_util',url,counter_name+'(%)')
+
+            counter_name='memory.usage';
+            url=getData(vmId,counter_name);
+            showCharts('memory.usage',url,counter_name+'(MB)');
+
+            counter_name='network.incoming.bytes.rate';
+            url=getData(vmId,counter_name);
+            showCharts('network.incoming',url,counter_name+'(B/s)');
+
+            counter_name='network.outgoing.bytes.rate';
+            url=getData(vmId,counter_name);
+            showCharts('network.outgoing',url,counter_name+'(B/s)');
+
+            counter_name='volume.read.bytes.rate';
+            url=getData(vmId,counter_name);
+            showCharts('volume.read',url,counter_name+'(B/s)');
+
+            counter_name='volume.write.bytes.rate';
+            url=getData(vmId,counter_name);
+            showCharts('volume.write',url,counter_name+'(B/s)');
 
         }
         function findVmByProject(){
 
             project_id=$('#proList').combobox('getValue');
-            alert(project_id)
+{#            alert(project_id)#}
             $('#vmList').combobox('reload', '/LPC/perf_searchVmByProject')
 
 
@@ -37,11 +64,11 @@
             $('#signupForm').form('clear');
         }
 
-        function getData(vmId,counter_name) {
+         function getData(vmId,counter_name) {
 
             url = ''
             if (counter_name == 'volume.read.bytes.rate' || counter_name == 'volume.write.bytes.rate') {
-                url = '/LPC/perf_searchStaticByVm?resource_id=' + vmId + '&counter_name=' + counter_name
+                url = '/LPC/perf_searchVolumeStatic?resource_id=' + vmId + '&counter_name=' + counter_name
             }
             else if (counter_name == 'network.incoming.bytes.rate' || counter_name == 'network.outgoing.bytes.rate') {
                 url = '/LPC/perf_searchNetworkStatic?resource_id=' + vmId + '&counter_name=' + counter_name
@@ -49,11 +76,12 @@
             else {
                 url = '/LPC/perf_searchStaticByVm?resource_id=' + vmId + '&counter_name=' + counter_name
             }
+            return url;
 
-            showCharts(url)
         }
-        function showCharts(url){
-            var myChart = echarts.init(document.getElementById('main'));
+        function showCharts(divID,url,counter_name){
+            var myChart = echarts.init(document.getElementById(divID));
+{#            alert(myChart)#}
             // 异步加载数据
             $.getJSON(url, function (data) {
 
@@ -105,6 +133,11 @@
         valueField: 'id',
         textField: 'name',
         url: '/LPC/perf_project_init',
+        filter: function(q, row){
+		    var opts = $(this).combobox('options');
+		    var q_lower=q.toLowerCase()
+		    return row['name_lower_case'].indexOf(q_lower)>-1;
+	    },
         onSelect: function(rec){
             var project_id=$('#projectList').combobox('getValue')
 {#            alert(project_id)#}
@@ -112,24 +145,44 @@
             $('#vmList').combobox('clear')
             $('#vmList').combobox('reload', url);
         }">
+
+
     <span>vm:</span>
-    <input id="vmList" class="easyui-combobox" data-options="valueField:'uuid',textField:'display_name'">
-   <span>counter_name:</span>
-    <select id="counter_name" class="easyui-combobox" name="state" style="width:200px;">
-        <option value="cpu_util">cpu_util</option>
-        <option value="memory.usage">memory.usage</option>
-        <option value="network.incoming.bytes.rate">network.incoming.bytes.rate</option>
-        <option value="network.outgoing.bytes.rate">network.outgoing.bytes.rate</option>
-        <option value="volume.read.bytes.rate">volume.read.bytes.rate</option>
-        <option value="volume.write.bytes.rate">volume.write.bytes.rate</option>
-    </select>
+    <input id="vmList" class="easyui-combobox"
+           data-options="
+           valueField:'uuid',
+           textField:'display_name',
+            filter: function(q, row){
+		        var opts = $(this).combobox('options');
+		        return row[opts.textField].indexOf(q)>-1;
+	    }">
+
 
     <input  type="button" value="search" onclick="javascript:doSearch();"/>
     <input class="clear" type="button" value="clear" onclick="javascript:doClear();"/>
 </div>
 
 
-    <div id="main" style="width: 1000px;height:400px;"></div>
+   <table>
+    <tr>
+        <td>
+             <table id="vmInfo" class="easyui-propertygrid" style="width:600px" data-options="
+                url:'/LPC/perf_searchResource',
+                method:'get',
+                showGroup:true,
+                scrollbarSize:0
+            ">
+            </table>
+            <div id="cpu_util" style="width: 1000px;height:200px;"></div>
+            <div id="memory.usage" style="width: 1000px;height:200px;"></div>
+            <div id="network.incoming" style="width: 1000px;height:200px;"></div>
+            <div id="network.outgoing" style="width: 1000px;height:200px;"></div>
+            <div id="volume.read" style="width: 1000px;height:200px;"></div>
+            <div id="volume.write" style="width: 1000px;height:200px;"></div>
+            <div id="volume.write" style="width: 1000px;height:200px;"></div>
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>

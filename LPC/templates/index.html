@@ -23,6 +23,7 @@
                     fit:true
                 });
             }else{
+
                 $('#tabs').tabs('select', title);
             }
         }
@@ -48,8 +49,9 @@
                         <span>VM FUNCTION</span>
                         <ul>
                             <li><span><a href="javascript:void(0)" onclick="addPanel('vm_index','vm list')">VM List</a></span></li>
-                            <li><span><a href="javascript:void(0)" onclick="addPanel('vmtopperf_index','top perf list')">Perf List</a></span></li>
-                            <li><span><a href="javascript:void(0)" onclick="addPanel('vmperf_index','statistic list')">Statistic List</a></span></li>
+                            <li><span><a href="javascript:void(0)" onclick="addPanel('vmtopperf_index','top perf list')">Top Perf List</a></span></li>
+                            <li><span><a href="javascript:void(0)" onclick="addPanel('vmperf_index','statistic list by project')">Perf by Project</a></span></li>
+                            <li><span><a href="javascript:void(0)" onclick="addPanel('vmperf_byhost','statistic list by host')">Perf by Host</a></span></li>
                             <li><span><a href="javascript:void(0)" onclick="addPanel('','operation log')">Operation Log</a></span></li>
 
                         </ul>

@@ -53,9 +53,19 @@ class DateTimeUtil:
         end = start - datetime.timedelta(i)
         return end;
 
+    @staticmethod
+    def isodateString_Timestamp(dt_str):
+        dt, _, us= dt_str.partition(".")
+        dt= datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S")
+        us= int(us.rstrip("Z"), 10)
+        return dt + datetime.timedelta(microseconds=us)
+
 if __name__ == '__main__':
      #test dateutil
     tmpDate=DateTimeUtil.dayBefore(7);
     str=DateTimeUtil.datetime_toString(tmpDate,"%Y-%m-%d")
     tmpStr=DateTimeUtil.string_toDatetime(str,'%Y-%m-%d')
-    print(tmpStr)
+
+    aa='2016-01-20T02:52:27+00:00'
+    bb=DateTimeUtil.isodateString_Timestamp(aa)
+    print(bb)

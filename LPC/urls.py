@@ -1,5 +1,6 @@
 from LPC.vm_perf import perf_project_init, vmperf_index, perf_searchVmByProject, perf_searchStaticByVm, \
-    perf_searchVolumeStatic, mysqldbtest, perf_searchNetworkStatic
+    perf_searchVolumeStatic, mysqldbtest, perf_searchNetworkStatic, vmperf_byhost, perf_searchVmByHost, \
+    perf_searchResource
 from LPC.vm_topperf import  findTopPerfStatics, vmtopperf_index
 
 __author__ = 'teddy'
@@ -23,6 +24,13 @@ urlpatterns = [
     url(r'^perf_searchStaticByVm',perf_searchStaticByVm),
     url(r'^perf_searchVolumeStatic',perf_searchVolumeStatic),
     url(r'^perf_searchNetworkStatic',perf_searchNetworkStatic),
+
+    url(r'^vmperf_byhost',vmperf_byhost),
+    url(r'^perf_searchVmByHost',perf_searchVmByHost),
+    url(r'^perf_searchResource',perf_searchResource),
+
+
+
 
     url(r'^mysqldbtest',mysqldbtest),
 

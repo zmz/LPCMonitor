@@ -128,6 +128,14 @@ DATABASES = {
         'PASSWORD':'lenovo1qaz2wsx,./',
         'HOST':'10.120.20.1',
         'PORT':'33060',
+    },
+     'glance': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'glance',
+        'USER':'root',
+        'PASSWORD':'lenovo1qaz2wsx,./',
+        'HOST':'10.120.20.1',
+        'PORT':'33060',
     }
 }
 

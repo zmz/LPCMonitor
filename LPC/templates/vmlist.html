@@ -20,7 +20,11 @@
                 url:'/LPC/zone_init',
                 valueField:'value',
                 textField:'text',
-                groupField:'group'
+                groupField:'group',
+                filter: function(q, row){
+		        var opts = $(this).combobox('options');
+		        return row[opts.textField].indexOf(q)>-1;
+	            }
             });
         })
         function doSearch(){
@@ -56,7 +60,7 @@
 <table id="vm_tt" class="easyui-datagrid"
          url="/LPC/vm_search" toolbar="#tb"
         title="Load Data" iconCls="icon-save"
-        rownumbers="true" pageSize="20" pagination="true" fitColumns="true" singleSelect="true">
+        rownumbers="true" pageSize="10" pagination="true" fitColumns="true" singleSelect="true">
         {% csrf_token %}
 
     <thead>
